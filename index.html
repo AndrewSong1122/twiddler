@@ -3,25 +3,179 @@
   <head>
     <script src="jquery.js"></script>
     <script src="data_generator.js"></script>
+    <style>
+      .post {
+        border-style: solid;
+        border-width: 3px 2px 1px 2px;
+      }
+
+      .details {
+        border-style: solid;
+        border-width: 1px 2px 1px 2px;
+      }
+
+      body {
+        font-family: "Segoe UI";
+        /*background-color: DodgerBlue;*/
+      }
+
+      .aqua {
+        background-color: AliceBlue;
+      }
+
+      #postHeader {
+
+      }
+    </style>
   </head>
-  <body>
+  <body style="color:DodgerBlue">
     <script>
+      var updateTweets = function(username){
+        var $div = $('div');
+        $div.html('');
 
-      $(document).ready(function(){
-        var $body = $('body');
-        $body.html('');
-
-        var index = streams.home.length - 1;
+        if(arguments[0]===undefined)
+        {
+          var index = streams.home.length - 1;
+          $('#postHeader').text("All Posts");
+        }
+        else
+        {
+          var index = ((streams.users)[username]).length - 1;
+          $('#postHeader').text(username + "\'s Posts");
+        }
         while(index >= 0){
-          var tweet = streams.home[index];
-          var $tweet = $('<div></div>');
-          $tweet.text('@' + tweet.user + ': ' + tweet.message);
-          $tweet.appendTo($body);
+          if(arguments[0]===undefined)
+          {
+            var tweet = streams.home[index];
+          }
+          else
+          {
+            var tweet = ((streams.users)[username])[index];
+          }
+          var $tweet = $('<div class=\"post\"></div>');
+          var $details = $('<div class=\"details\"></div>');
+
+          if((index%2)===1)
+          {
+            $tweet.addClass('aqua');
+            $details.addClass('aqua');
+          }
+
+          var today = tweet.created_at;
+          var dd = String(today.getDate()).padStart(2, '0');
+          var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+          var yyyy = today.getFullYear();
+          var day = mm + '/' + dd + '/' + yyyy;
+
+          var h = today.getHours();
+          var m = today.getMinutes();
+          var s = today.getSeconds();
+          var time = h + ":" + m + ":" + s;
+
+          // var $userlink = $('<a href=\"#\" class=\"userlink\">'+tweet.user+'</a>');
+          var $userlink = $('<a href=\"#\" class=\"userlink\">'+tweet.user+'</a>');
+
+          // $tweet.text('@' + tweet.user + ': ' + tweet.message);
+          // $tweet.text('\"' + tweet.message + '\"' + ' - Thus spoke ' + tweet.user + ' on ' + day + ' at ' + time);
+          // $tweet.text('\"' + tweet.message + '\"');
+          // $details.text(' - Thus spoke ' + tweet.user + ' on ' + day + ' at ' + time);
+          $tweet.text('\"' + tweet.message + '\"' + ' - ' + day + ' at ' + time);
+          $details.text('Posted by ');
+          // $details.text(tweet.user);
+
+          // var $postedOn = $(' - ' + day + ' at ' + time);
+
+          $userlink.appendTo($details);
+          $tweet.appendTo($div);
+          $details.appendTo($div);
           index -= 1;
         }
+      };
 
+      // var getUser = function(username){
+      //   var $div = $('div');
+      //   $div.html('');
+
+      //   var index = ((streams.users)[username]).length - 1;
+      //   while(index >= 0){
+      //     var tweet = ((streams.users)[username])[index];
+      //     var $tweet = $('<div></div>');
+      //     var $details = $('<div></div>');
+
+      //     var today = tweet.created_at;
+      //     var dd = String(today.getDate()).padStart(2, '0');
+      //     var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+      //     var yyyy = today.getFullYear();
+      //     var day = mm + '/' + dd + '/' + yyyy;
+
+      //     var h = today.getHours();
+      //     var m = today.getMinutes();
+      //     var s = today.getSeconds();
+      //     var time = h + ":" + m + ":" + s;
+
+      //     // var $userlink = $('<a href=\"#\" class=\"userlink\">'+tweet.user+'</a>');
+      //     var $userlink = $('<a href=\"#\" class=\"userlink\">'+tweet.user+'</a>');
+
+      //     // $tweet.text('@' + tweet.user + ': ' + tweet.message);
+      //     // $tweet.text('\"' + tweet.message + '\"' + ' - Thus spoke ' + tweet.user + ' on ' + day + ' at ' + time);
+      //     // $tweet.text('\"' + tweet.message + '\"');
+      //     // $details.text(' - Thus spoke ' + tweet.user + ' on ' + day + ' at ' + time);
+      //     $tweet.text('\"' + tweet.message + '\"' + ' - ' + day + ' at ' + time);
+      //     $details.text('Posted by ');
+      //     // $details.text(tweet.user);
+
+      //     // var $postedOn = $(' - ' + day + ' at ' + time);
+
+      //     $userlink.appendTo($details);
+      //     $tweet.appendTo($div);
+      //     $details.appendTo($div);
+      //     index -= 1;
+      //   }
+      // };
+
+
+
+      // $("#updater").on.('click',updateTweets);
+
+      $(document).ready(function(){
+        // var $body = $('body');
+        // $body.html('');
+
+        // var index = streams.home.length - 1;
+        // while(index >= 0){
+        //   var tweet = streams.home[index];
+        //   var $tweet = $('<div></div>');
+
+        //   var today = new Date();
+        //   var dd = String(today.getDate()).padStart(2, '0');
+        //   var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        //   var yyyy = today.getFullYear();
+        //   var day = mm + '/' + dd + '/' + yyyy;
+
+        //   var h = today.getHours();
+        //   var m = today.getMinutes();
+        //   var s = today.getSeconds();
+        //   var time = h + ":" + m + ":" + s;
+
+        //   // $tweet.text('@' + tweet.user + ': ' + tweet.message);
+        //   $tweet.text('\"' + tweet.message + '\"' + ' - Thus spoke ' + tweet.user + ' on ' + day + ' at ' + time);
+        //   $tweet.appendTo($body);
+        //   index -= 1;
+        // }
+        updateTweets();
+        $("#updater").on('click',function(){updateTweets()});
+        // $(document).on('click','.userlink',function(){getUser($(this).text())});
+        $(document).on('click','.userlink',function(){updateTweets($(this).text())});
+        // $("#updater").click(function(){
+        //     alert("button");
+        // });
       });
 
     </script>
+
+    <h1>Twiddler <button id="updater">Update All</button></h1>
+    <h2 id="postHeader"></h2>
+    <div></div>
   </body>
 </html>
